@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from '../_services';
+
+import { User } from '../_models/User';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,6 +10,17 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  user: User = null;
+
+  constructor(
+    private authService: AuthenticationService
+  ) {
+    this.authService.userEmitter.subscribe(user => {
+      this.user = user;
+    });
+
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+  }
 
   collapse() {
     this.isExpanded = false;
